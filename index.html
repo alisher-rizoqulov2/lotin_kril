@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8" />
-<title>Matn Konverter</title>
+<title>Matn Konverter + Kalendar</title>
 <style>
   body {
     font-family: "Segoe UI", Tahoma, sans-serif;
@@ -10,9 +10,11 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     margin: 0;
     color: #fff;
+    gap: 20px;
+    padding: 20px;
     transition: background 0.4s, color 0.4s;
   }
   .dark-mode {
@@ -124,6 +126,33 @@
     font-weight: bold;
     font-size: 15px;
   }
+  th:nth-child(6), th:nth-child(7) {
+  color: red;
+  font-weight: bold;
+}
+td:nth-child(6), td:nth-child(7) {
+  color: red;
+  font-weight: bold;
+}
+
+/* Oy va yil select dizayni */
+.calendar-header select {
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid #198754;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  color: #198754;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s ease;
+}
+.calendar-header select:hover {
+  background: #d1e7dd;
+  color: #14532d;
+  transform: scale(1.05);
+}
   textarea {
     width: 100%;
     height: 180px;
@@ -173,9 +202,78 @@
     background: #ffc107 !important;
     color: #000 !important;
   }
+
+  /* Kalendar */
+  .calendar-container {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 320px;
+    text-align: center;
+    transition: background 0.4s, color 0.4s;
+  }
+  .dark-mode .calendar-container {
+    background: rgba(40, 40, 40, 0.95);
+    color: #f1f1f1;
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .calendar-header select {
+    padding: 5px;
+    font-size: 16px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .calendar-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #14532d;
+  text-align: center;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(90deg, #198754, #0f5132);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dark-mode .calendar-title {
+  background: linear-gradient(90deg, #90ee90, #198754);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+  th, td {
+    width: 14.2%;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+  }
+  th {
+    font-weight: bold;
+    color: #198754;
+  }
+  td:hover {
+    background: #198754;
+    color: #fff;
+    border-radius: 50%;
+  }
+  .today {
+    background: #ffc107;
+    color: #000;
+    border-radius: 50%;
+  }
 </style>
 </head>
 <body>
+  <!-- Asosiy Konvertor -->
   <div class="card">
     <h2 id="title">Lotin → Кирилл</h2>
     <div class="date-time">
@@ -199,7 +297,34 @@
       <button id="copyBtn" onclick="copyToClipboard()">📋</button>
     </div>
   </div>
+
+  <!-- Yonida Kalendar -->
+  <div class="calendar-container">
+    <div class="calendar-title">KALENDAR</div>
+    <div class="calendar-header">
+      <button onclick="prevMonth()">◀</button>
+      <select id="monthSelect"></select>
+      <select id="yearSelect"></select>
+      <button onclick="nextMonth()">▶</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Dush</th>
+          <th>Sesh</th>
+          <th>Chor</th>
+          <th>Pay</th>
+          <th>Jum</th>
+          <th>Shan</th>
+          <th>Yak</th>
+        </tr>
+      </thead>
+      <tbody id="calendarBody"></tbody>
+    </table>
+  </div>
+
 <script>
+/* Sizning mavjud JS kodingiz */
 const inputText = document.getElementById("inputText");
 const outputText = document.getElementById("outputText");
 const timeElement = document.getElementById("currentTime");
@@ -216,32 +341,7 @@ const newsList = [
 "✍️ Lotin yozuvida 29 ta harf mavjud.",
 "📚 Lotin yozuvi asosida o‘zbek tili imlosi tuzilgan.",
 "💡 Harflar fonetik asosda belgilanadi.",
-"✅ Internetda lotin yozuvi ko‘proq ishlatiladi.",
-"🌍 Lotin yozuvi xalqaro tilda muhim o‘rin tutadi.",
-"🖊️ O‘zbekistonda lotinga o‘tish jarayoni bir necha bosqichda bo‘ldi.",
-"🔍 O‘ va G‘ harflari maxsus belgilar bilan yoziladi.",
-"⚠️ Lotin yozuvida `yozuvchi` so‘zi shunday yoziladi.",
-"🧐 Lotin yozuvi o‘rganish uchun qulay.",
-"🌐 Lotin yozuvi dunyo tillarida keng tarqalgan.",
-"📖 Lotin yozuvi qadim Rimdan boshlangan.",
-"🎓 To‘g‘ri yozish uchun imlo qoidalarini bilish kerak.",
-"📲 Mobil qurilmalarda lotin yozuvi ishlatiladi.",
-"🔤 Lotin yozuvi kelajakda ham qo‘llaniladi.",
-"📝 Lotin yozuvi 200 yil davomida rivojlanib kelmoqda.",
-"📈 Lotin yozuvi savodxonlikni oshiradi.",
-"✅ O‘zbek alifbosi 1929-yilda ham lotinga o‘tgan edi.",
-"💡 Lotin yozuvi boshqa davlatlarda ham ishlatiladi.",
-"📚 Ko‘plab darsliklar lotin yozuvida chop etiladi.",
-"🔎 Lotin yozuvi ilmiy ishlar uchun qulay.",
-"🖥️ Kompyuter dasturlarida lotin yozuvi afzal.",
-"📜 Qadimgi Rim lotin yozuvini kiritgan.",
-"🌍 100 dan ortiq tilda lotin yozuvi qo‘llaniladi.",
-"🎯 Lotin yozuvi o‘zbek tilida talaffuzni aniq ifodalaydi.",
-"⚡ Lotin yozuvi matnlarni tez yozishga imkon beradi.",
-"✅ Lotin yozuvi rasmiy hujjatlarda ishlatiladi.",
-"🧠 Lotin yozuvi imlo va grammatikani mustahkamlaydi.",
-"🔠 Lotin yozuvi 26 harfdan kelib chiqqan.",
-"📢 Lotin yozuvi xalqaro aloqalar uchun zarur."
+"✅ Internetda lotin yozuvi ko‘proq ishlatiladi."
 ];
 
 let currentMode = "latinToCyril";
@@ -266,11 +366,8 @@ function cyrilToLatin(text) {
     "а":"a","б":"b","д":"d","е":"e","ф":"f","г":"g",
     "ҳ":"h","и":"i","ж":"j","к":"k","л":"l","м":"m",
     "н":"n","о":"o","п":"p","қ":"q","р":"r","с":"s",
-    "т":"t","у":"u","в":"v","х":"x","й":"y","з":"z","ъ":"'"
-  };
-  return convertText(text, map);
+    "т":"t","у":"u","в":"v","х":"x","й":"y","з":"z","ъ":"'"}; return convertText(text, map);
 }
-
 function convertText(text, map) {
   const keys = Object.keys(map).sort((a, b) => b.length - a.length);
   let result = text;
@@ -279,7 +376,6 @@ function convertText(text, map) {
   });
   return result;
 }
-
 inputText.addEventListener("input", () => {
   let translated = "";
   if (currentMode === "latinToCyril") {
@@ -289,14 +385,12 @@ inputText.addEventListener("input", () => {
   }
   outputText.value = translated;
 });
-
 toggleModeBtn.addEventListener("click", () => {
   currentMode = currentMode === "latinToCyril" ? "cyrilToLatin" : "latinToCyril";
   title.textContent = currentMode === "latinToCyril" ? "Lotin → Кирилл" : "Кирилл → Lotin";
   inputText.value = "";
   outputText.value = "";
 });
-
 function copyToClipboard() {
   if (outputText.value.trim() === "") {
     alert("Natija mavjud emas!");
@@ -309,11 +403,9 @@ function copyToClipboard() {
     }, 1500);
   });
 }
-
 function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
 }
-
 function updateTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
@@ -325,17 +417,14 @@ function updateTime() {
   const year = now.getFullYear();
   dateElement.textContent = `${day}-${month}, ${year} yil`;
 }
-
 setInterval(updateTime, 1000);
 updateTime();
-
 function showNews() {
   const randomIndex = Math.floor(Math.random() * newsList.length);
   typeEffect(newsList[randomIndex]);
 }
 setInterval(showNews, 5000);
 showNews();
-
 function typeEffect(text) {
   newsBox.textContent = "";
   let i = 0;
@@ -344,6 +433,81 @@ function typeEffect(text) {
     i++;
     if (i >= text.length) clearInterval(interval);
   }, 50);
+}
+
+/* Kalendar JS */
+const calendarBody = document.getElementById("calendarBody");
+const monthSelect = document.getElementById("monthSelect");
+const yearSelect = document.getElementById("yearSelect");
+const calMonths = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
+for (let i = 0; i < calMonths.length; i++) {
+  const opt = document.createElement("option");
+  opt.value = i;
+  opt.textContent = calMonths[i];
+  monthSelect.appendChild(opt);
+}
+const currentDate = new Date();
+let currentMonth = currentDate.getMonth();
+let currentYear = currentDate.getFullYear();
+for (let y = 1970; y <= 2100; y++) {
+  const opt = document.createElement("option");
+  opt.value = y;
+  opt.textContent = y;
+  if (y === currentYear) opt.selected = true;
+  yearSelect.appendChild(opt);
+}
+monthSelect.value = currentMonth;
+function renderCalendar(month, year) {
+  calendarBody.innerHTML = "";
+  const firstDay = new Date(year, month, 1).getDay() || 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let date = 1;
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement("tr");
+    for (let j = 1; j <= 7; j++) {
+      const cell = document.createElement("td");
+      if ((i === 0 && j < firstDay) || date > daysInMonth) {
+        cell.textContent = "";
+      } else {
+        cell.textContent = date;
+        if (date === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
+          cell.classList.add("today");
+        }
+        date++;
+      }
+      row.appendChild(cell);
+    }
+    calendarBody.appendChild(row);
+  }
+}
+renderCalendar(currentMonth, currentYear);
+monthSelect.addEventListener("change", () => {
+  currentMonth = parseInt(monthSelect.value);
+  renderCalendar(currentMonth, currentYear);
+});
+yearSelect.addEventListener("change", () => {
+  currentYear = parseInt(yearSelect.value);
+  renderCalendar(currentMonth, currentYear);
+});
+function prevMonth() {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  monthSelect.value = currentMonth;
+  yearSelect.value = currentYear;
+  renderCalendar(currentMonth, currentYear);
+}
+function nextMonth() {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  monthSelect.value = currentMonth;
+  yearSelect.value = currentYear;
+  renderCalendar(currentMonth, currentYear);
 }
 </script>
 </body>
