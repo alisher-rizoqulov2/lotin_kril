@@ -1,416 +1,347 @@
 <!DOCTYPE html>
 <html lang="uz">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Matn Konverter</title>
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, sans-serif;
-        background: linear-gradient(135deg, #14532d, #1e293b);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-        color: #fff;
-        transition: background 0.4s, color 0.4s;
-      }
-      .dark-mode {
-        background: linear-gradient(135deg, #232526, #414345);
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.95);
-        color: #333;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        width: 90%;
-        max-width: 900px;
-        transition: background 0.4s, color 0.4s;
-      }
-      .dark-mode .card {
-        background: rgba(40, 40, 40, 0.95);
-        color: #f1f1f1;
-      }
-      h2 {
-        text-align: center;
-        margin-bottom: 15px;
-        font-size: 26px;
-      }
-      .date-time {
-        text-align: center;
-        margin-bottom: 12px;
-      }
-      .date {
-        font-size: 18px;
-        font-weight: bold;
-        color: #14532d;
-      }
-      .dark-mode .date {
-        color: #90ee90;
-      }
-      .time {
-        font-family: "Courier New", monospace;
-        font-size: 28px;
-        font-weight: bold;
-        color: transparent;
-        background: linear-gradient(90deg, #ff6a00, #ee0979);
-        background-clip: text;
-        -webkit-background-clip: text;
-        padding: 6px 14px;
-        border-radius: 12px;
-        display: inline-block;
-        letter-spacing: 3px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      }
-      .news-box {
-        margin: 10px 0;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        color: #2b2b2b;
-        min-height: 30px;
-      }
-      .dark-mode .news-box {
-        color: #f1f1f1;
-      }
-
-      .mode-btn {
-        display: block;
-        margin: 12px auto;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        background: linear-gradient(135deg, #198754, #0f5132);
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      }
-      .mode-btn:hover {
-        transform: scale(1.05);
-        background: linear-gradient(135deg, #0f5132, #198754);
-      }
-
-      .container {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-      }
-      .field {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        max-width: 400px;
-      }
-      label {
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 15px;
-      }
-      textarea {
-        width: 100%;
-        height: 180px;
-        font-size: 15px;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-        resize: none;
-        background: #f9f9f9;
-        color: #000;
-        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-        transition: background 0.4s, color 0.4s;
-      }
-      .dark-mode textarea {
-        background: #2b2b2b;
-        color: #f1f1f1;
-      }
-      textarea:focus {
-        box-shadow: 0 0 6px rgba(74, 144, 226, 0.4);
-      }
-
-      .btn-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-      }
-      button {
-        padding: 8px;
-        background: #198754;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.3s;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      }
-      button:hover {
-        background: #14532d;
-        transform: scale(1.1);
-      }
-      .copied {
-        background: #ffc107 !important;
-        color: #000 !important;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <h2 id="title">Lotin → Кирилл</h2>
-      <div class="date-time">
-        <div class="date" id="currentDate"></div>
-        <div class="time" id="currentTime"></div>
+<head>
+<meta charset="UTF-8" />
+<title>Matn Konverter</title>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: linear-gradient(135deg, #14532d, #1e293b);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    color: #fff;
+    transition: background 0.4s, color 0.4s;
+  }
+  .dark-mode {
+    background: linear-gradient(135deg, #232526, #414345);
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 900px;
+    transition: background 0.4s, color 0.4s;
+  }
+  .dark-mode .card {
+    background: rgba(40, 40, 40, 0.95);
+    color: #f1f1f1;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 32px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 900;
+    color: transparent;
+    background: linear-gradient(90deg, #14532d, #0f5132);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
+  }
+  .dark-mode h2 {
+    background: linear-gradient(90deg, #90ee90, #198754);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .date-time {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .date {
+    font-size: 18px;
+    font-weight: bold;
+    color: #14532d;
+  }
+  .dark-mode .date {
+    color: #90ee90;
+  }
+  .time {
+    font-family: "Courier New", monospace;
+    font-size: 28px;
+    font-weight: bold;
+    color: transparent;
+    background: linear-gradient(90deg, #ff6a00, #ee0979);
+    background-clip: text;
+    -webkit-background-clip: text;
+    padding: 6px 14px;
+    border-radius: 12px;
+    display: inline-block;
+    letter-spacing: 3px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  .news-box {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #2b2b2b;
+    min-height: 30px;
+  }
+  .dark-mode .news-box {
+    color: #f1f1f1;
+  }
+  .mode-btn {
+    display: block;
+    margin: 12px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #198754, #0f5132);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  .mode-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #0f5132, #198754);
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  textarea {
+    width: 100%;
+    height: 180px;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    resize: none;
+    background: #f9f9f9;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.4s, color 0.4s;
+  }
+  .dark-mode textarea {
+    background: #2b2b2b;
+    color: #f1f1f1;
+  }
+  textarea:focus {
+    box-shadow: 0 0 6px rgba(74, 144, 226, 0.4);
+  }
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  button {
+    padding: 8px;
+    background: #198754;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  button:hover {
+    background: #14532d;
+    transform: scale(1.1);
+  }
+  .copied {
+    background: #ffc107 !important;
+    color: #000 !important;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="title">Lotin → Кирилл</h2>
+    <div class="date-time">
+      <div class="date" id="currentDate"></div>
+      <div class="time" id="currentTime"></div>
+    </div>
+    <div class="news-box" id="newsBox">Lotin yozuvi haqida ma’lumot yuklanmoqda...</div>
+    <button id="toggleMode" class="mode-btn">↔</button>
+    <div class="container">
+      <div class="field">
+        <label for="inputText">Matn kiriting</label>
+        <textarea id="inputText" placeholder="Matn kiriting..."></textarea>
       </div>
-
-      <div class="news-box" id="newsBox">
-        Lotin yozuvi haqida ma’lumot yuklanmoqda...
-      </div>
-
-      <button id="toggleMode" class="mode-btn">→</button>
-
-      <div class="container">
-        <div class="field">
-          <label for="inputText">Matn kiriting</label>
-          <textarea id="inputText" placeholder="Matn kiriting..."></textarea>
-        </div>
-        <div class="field">
-          <label for="outputText">Natija</label>
-          <textarea
-            id="outputText"
-            placeholder="Natija shu yerda chiqadi..."
-            readonly
-          ></textarea>
-        </div>
-      </div>
-      <div class="btn-container">
-        <button onclick="toggleDarkMode()">🌙</button>
-        <button id="copyBtn" onclick="copyToClipboard()">📋</button>
+      <div class="field">
+        <label for="outputText">Natija</label>
+        <textarea id="outputText" placeholder="Natija shu yerda chiqadi..." readonly></textarea>
       </div>
     </div>
+    <div class="btn-container">
+      <button onclick="toggleDarkMode()">🌙</button>
+      <button id="copyBtn" onclick="copyToClipboard()">📋</button>
+    </div>
+  </div>
+<script>
+const inputText = document.getElementById("inputText");
+const outputText = document.getElementById("outputText");
+const timeElement = document.getElementById("currentTime");
+const dateElement = document.getElementById("currentDate");
+const copyBtn = document.getElementById("copyBtn");
+const newsBox = document.getElementById("newsBox");
+const toggleModeBtn = document.getElementById("toggleMode");
+const title = document.getElementById("title");
 
-    <script>
-      const inputText = document.getElementById("inputText");
-      const outputText = document.getElementById("outputText");
-      const timeElement = document.getElementById("currentTime");
-      const dateElement = document.getElementById("currentDate");
-      const copyBtn = document.getElementById("copyBtn");
-      const newsBox = document.getElementById("newsBox");
-      const toggleModeBtn = document.getElementById("toggleMode");
-      const title = document.getElementById("title");
+const months = ["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"];
 
-      const months = [
-        "yanvar",
-        "fevral",
-        "mart",
-        "aprel",
-        "may",
-        "iyun",
-        "iyul",
-        "avgust",
-        "sentabr",
-        "oktabr",
-        "noyabr",
-        "dekabr",
-      ];
+const newsList = [
+"📌 Lotin yozuvi O‘zbekistonda 1993-yilda rasmiylashtirilgan.",
+"✍️ Lotin yozuvida 29 ta harf mavjud.",
+"📚 Lotin yozuvi asosida o‘zbek tili imlosi tuzilgan.",
+"💡 Harflar fonetik asosda belgilanadi.",
+"✅ Internetda lotin yozuvi ko‘proq ishlatiladi.",
+"🌍 Lotin yozuvi xalqaro tilda muhim o‘rin tutadi.",
+"🖊️ O‘zbekistonda lotinga o‘tish jarayoni bir necha bosqichda bo‘ldi.",
+"🔍 O‘ va G‘ harflari maxsus belgilar bilan yoziladi.",
+"⚠️ Lotin yozuvida `yozuvchi` so‘zi shunday yoziladi.",
+"🧐 Lotin yozuvi o‘rganish uchun qulay.",
+"🌐 Lotin yozuvi dunyo tillarida keng tarqalgan.",
+"📖 Lotin yozuvi qadim Rimdan boshlangan.",
+"🎓 To‘g‘ri yozish uchun imlo qoidalarini bilish kerak.",
+"📲 Mobil qurilmalarda lotin yozuvi ishlatiladi.",
+"🔤 Lotin yozuvi kelajakda ham qo‘llaniladi.",
+"📝 Lotin yozuvi 200 yil davomida rivojlanib kelmoqda.",
+"📈 Lotin yozuvi savodxonlikni oshiradi.",
+"✅ O‘zbek alifbosi 1929-yilda ham lotinga o‘tgan edi.",
+"💡 Lotin yozuvi boshqa davlatlarda ham ishlatiladi.",
+"📚 Ko‘plab darsliklar lotin yozuvida chop etiladi.",
+"🔎 Lotin yozuvi ilmiy ishlar uchun qulay.",
+"🖥️ Kompyuter dasturlarida lotin yozuvi afzal.",
+"📜 Qadimgi Rim lotin yozuvini kiritgan.",
+"🌍 100 dan ortiq tilda lotin yozuvi qo‘llaniladi.",
+"🎯 Lotin yozuvi o‘zbek tilida talaffuzni aniq ifodalaydi.",
+"⚡ Lotin yozuvi matnlarni tez yozishga imkon beradi.",
+"✅ Lotin yozuvi rasmiy hujjatlarda ishlatiladi.",
+"🧠 Lotin yozuvi imlo va grammatikani mustahkamlaydi.",
+"🔠 Lotin yozuvi 26 harfdan kelib chiqqan.",
+"📢 Lotin yozuvi xalqaro aloqalar uchun zarur."
+];
 
-      const newsList = [
-        "📌 Lotin yozuvi O‘zbekistonda 1993-yilda joriy etilgan.",
-        "✍️ Lotin yozuvida 29 ta harf mavjud.",
-        "📚 Lotin yozuvi asosida o‘zbek imlosi qoidalari yaratilgan.",
-        "💡 Har bir harfga mos tovush mavjud, ortiqcha belgilar yo‘q.",
-        "✅ Internetda eng ko‘p ishlatiladigan yozuv – lotin yozuvi.",
-        "🌍 Lotin yozuvi xalqaro kommunikatsiya uchun qulay.",
-        "🖊️ Lotin yozuviga o‘tish jarayoni bir necha bosqichda amalga oshirilgan.",
-        "🔍 O‘ va G‘ harflari lotinda maxsus belgi bilan yoziladi.",
-        "⚠️ Lotin yozuvida `yozuvchi` so‘zi `yozuvchi` bo‘lib yoziladi.",
-        "🧐 Lotin yozuvi o‘rganish oson va tushunarli.",
-        "🌐 Lotin yozuvi ko‘plab davlatlarda rasmiy yozuv hisoblanadi.",
-        "📖 Lotin yozuvi qadimiy Rim davridan boshlangan.",
-        "🎓 Lotin yozuvini to‘g‘ri yozish uchun imlo qoidalariga amal qiling.",
-        "📲 Mobil qurilmalarda lotin yozuvi qulayroq.",
-        "🔤 Lotin yozuvi kelajakda ham keng qo‘llanishi kutilmoqda.",
-        "✒️ Lotin yozuvida `sh`, `ch` kabi qo‘sh harflar mavjud.",
-        "📗 O‘zbek lotin yozuvi turkiy tillarga moslashtirilgan.",
-        "💻 Kompyuter klaviaturalari lotin yozuviga asoslangan.",
-        "🖥️ Dasturlash tillari asosan lotin yozuvida yoziladi.",
-        "📈 Lotin yozuvi islohotlari bir necha marta o‘zgargan.",
-        "🎯 O‘zbek tilida lotin yozuvi hozir ham keng ishlatiladi.",
-        "📜 Lotin yozuvi tarixan yunon alifbosidan kelib chiqqan.",
-        "📒 Ilmiy maqolalarda ko‘pincha lotin yozuvi qo‘llaniladi.",
-        "🌟 Lotin yozuvi zamonaviy kommunikatsiyada muhim rol o‘ynaydi.",
-        "📡 Internet domenlari lotin yozuvida yoziladi.",
-        "📍 Lotin yozuvida har bir harf aniq tovushga ega.",
-        "🗂️ Davlat hujjatlarida lotin yozuvi asta-sekin qo‘llanmoqda.",
-        "📬 Elektron pochta manzillari lotin yozuvida yoziladi.",
-        "📠 Xalqaro standartlar lotin yozuviga asoslangan.",
-        "🖋️ Lotin yozuvi eng ko‘p ishlatiladigan yozuv tizimlaridan biridir."
-      ];
+let currentMode = "latinToCyril";
 
-      let currentMode = "latinToCyril";
+function latinToCyril(text) {
+  const map = {
+    "o‘": "ў","g‘": "ғ","sh": "ш","ch": "ч","ng": "нг",
+    "a": "а","b": "б","d": "д","e": "е","f": "ф","g": "г",
+    "h": "ҳ","i": "и","j": "ж","k": "к","l": "л","m": "м",
+    "n": "н","o": "о","p": "п","q": "қ","r": "р","s": "с",
+    "t": "т","u": "у","v": "в","x": "х","y": "й","z": "з","ʼ":"ъ","'":"ъ"
+  };
+  return convertText(text, map);
+}
 
-      function latinToCyril(text) {
-        const map = {
-          "o‘": "ў",
-          "o'": "ў",
-          "g‘": "ғ",
-          "g'": "ғ",
-          sh: "ш",
-          ch: "ч",
-          ng: "нг",
-          a: "а",
-          b: "б",
-          d: "д",
-          e: "е",
-          f: "ф",
-          g: "г",
-          h: "ҳ",
-          i: "и",
-          j: "ж",
-          k: "к",
-          l: "л",
-          m: "м",
-          n: "н",
-          o: "о",
-          p: "п",
-          q: "қ",
-          r: "р",
-          s: "с",
-          t: "т",
-          u: "у",
-          v: "в",
-          x: "х",
-          y: "й",
-          z: "з",
-          ʼ: "ъ",
-          "'": "ъ"
-        };
-        return convertText(text, map);
-      }
+function cyrilToLatin(text) {
+  const map = {
+    "ў":"o‘","ғ":"g‘","ш":"sh","ч":"ch","нг":"ng",
+    "а":"a","б":"b","д":"d","е":"e","ф":"f","г":"g",
+    "ҳ":"h","и":"i","ж":"j","к":"k","л":"l","м":"m",
+    "н":"n","о":"o","п":"p","қ":"q","р":"r","с":"s",
+    "т":"t","у":"u","в":"v","х":"x","й":"y","з":"z","ъ":"'"
+  };
+  return convertText(text, map);
+}
 
-      function cyrilToLatin(text) {
-        const map = {
-          ў: "o‘",
-          ғ: "g‘",
-          ш: "sh",
-          ч: "ch",
-          нг: "ng",
-          а: "a",
-          б: "b",
-          д: "d",
-          е: "e",
-          ф: "f",
-          г: "g",
-          ҳ: "h",
-          и: "i",
-          ж: "j",
-          к: "k",
-          л: "l",
-          м: "m",
-          н: "n",
-          о: "o",
-          п: "p",
-          қ: "q",
-          р: "r",
-          с: "s",
-          т: "t",
-          у: "u",
-          в: "v",
-          х: "x",
-          й: "y",
-          з: "z",
-          ъ: "'"
-        };
-        return convertText(text, map);
-      }
+function convertText(text, map) {
+  const keys = Object.keys(map).sort((a, b) => b.length - a.length);
+  let result = text;
+  keys.forEach(key => {
+    result = result.replace(new RegExp(key, "g"), map[key]);
+  });
+  return result;
+}
 
-      function convertText(text, map) {
-        const keys = Object.keys(map).sort((a, b) => b.length - a.length);
-        let result = text;
-        keys.forEach((key) => {
-          result = result.replace(new RegExp(key, "g"), map[key]);
-        });
-        return result;
-      }
+inputText.addEventListener("input", () => {
+  let translated = "";
+  if (currentMode === "latinToCyril") {
+    translated = latinToCyril(inputText.value);
+  } else {
+    translated = cyrilToLatin(inputText.value);
+  }
+  outputText.value = translated;
+});
 
-      inputText.addEventListener("input", () => {
-        let translated = "";
-        if (currentMode === "latinToCyril") {
-          translated = latinToCyril(inputText.value);
-        } else {
-          translated = cyrilToLatin(inputText.value);
-        }
-        outputText.value = translated;
-      });
+toggleModeBtn.addEventListener("click", () => {
+  currentMode = currentMode === "latinToCyril" ? "cyrilToLatin" : "latinToCyril";
+  title.textContent = currentMode === "latinToCyril" ? "Lotin → Кирилл" : "Кирилл → Lotin";
+  inputText.value = "";
+  outputText.value = "";
+});
 
-      toggleModeBtn.addEventListener("click", () => {
-        currentMode =
-          currentMode === "latinToCyril" ? "cyrilToLatin" : "latinToCyril";
-        title.textContent =
-          currentMode === "latinToCyril" ? "Lotin → Кирилл" : "Кирилл → Lotin";
-        inputText.value = "";
-        outputText.value = "";
-      });
+function copyToClipboard() {
+  if (outputText.value.trim() === "") {
+    alert("Natija mavjud emas!");
+    return;
+  }
+  navigator.clipboard.writeText(outputText.value).then(() => {
+    copyBtn.classList.add("copied");
+    setTimeout(() => {
+      copyBtn.classList.remove("copied");
+    }, 1500);
+  });
+}
 
-      function copyToClipboard() {
-        if (outputText.value.trim() === "") {
-          alert("Natija mavjud emas!");
-          return;
-        }
-        navigator.clipboard.writeText(outputText.value).then(() => {
-          copyBtn.classList.add("copied");
-          setTimeout(() => {
-            copyBtn.classList.remove("copied");
-          }, 1500);
-        });
-      }
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+}
 
-      function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
-      }
+function updateTime() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+  const day = now.getDate();
+  const month = months[now.getMonth()];
+  const year = now.getFullYear();
+  dateElement.textContent = `${day}-${month}, ${year} yil`;
+}
 
-      function updateTime() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-        const day = now.getDate();
-        const month = months[now.getMonth()];
-        const year = now.getFullYear();
-        dateElement.textContent = `${day}-${month}, ${year} yil`;
-      }
+setInterval(updateTime, 1000);
+updateTime();
 
-      setInterval(updateTime, 1000);
-      updateTime();
+function showNews() {
+  const randomIndex = Math.floor(Math.random() * newsList.length);
+  typeEffect(newsList[randomIndex]);
+}
+setInterval(showNews, 5000);
+showNews();
 
-      function showNews() {
-        const randomIndex = Math.floor(Math.random() * newsList.length);
-        typeEffect(newsList[randomIndex]);
-      }
-      setInterval(showNews, 5000);
-      showNews();
-
-      function typeEffect(text) {
-        newsBox.textContent = "";
-        let i = 0;
-        const interval = setInterval(() => {
-          newsBox.textContent += text[i];
-          i++;
-          if (i >= text.length) clearInterval(interval);
-        }, 50);
-      }
-    </script>
-  </body>
+function typeEffect(text) {
+  newsBox.textContent = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    newsBox.textContent += text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, 50);
+}
+</script>
+</body>
 </html>
