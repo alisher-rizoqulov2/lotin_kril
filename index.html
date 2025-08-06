@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Lotin → Kiril Konverter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 950px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        textarea {
+            width: 100%;
+            max-width: 420px;
+            height: 200px;
+            font-size: 16px;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            resize: none;
+            background: #f9f9f9;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        textarea:focus {
+            background: #fff;
+            box-shadow: 0 0 8px rgba(74,144,226,0.4);
+        }
+        .btn-container {
+            text-align: center;
+        }
+        button {
+            padding: 12px 24px;
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background: #357abd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Lotin → Kiril Konverter</h2>
+        <div class="container">
+            <textarea id="latin" placeholder="Lotincha yozing..."></textarea>
+            <textarea id="cyril" placeholder="Kirilcha natija..." readonly></textarea>
+        </div>
+        <div class="btn-container">
+            <button onclick="copyToClipboard()">📋 Nusxalash</button>
+        </div>
+    </div>
+
+    <script>
+        const latinInput = document.getElementById('latin');
+        const cyrilOutput = document.getElementById('cyril');
+
+        function latinToCyril(text) {
+            const map = {
+                'o‘': 'ў', 'g‘': 'ғ', 'sh': 'ш', 'ch': 'ч', 'ng': 'нг',
+                'a': 'а', 'b': 'б', 'd': 'д', 'e': 'е', 'f': 'ф', 'g': 'г',
+                'h': 'ҳ', 'i': 'и', 'j': 'ж', 'k': 'к', 'l': 'л', 'm': 'м',
+                'n': 'н', 'o': 'о', 'p': 'п', 'q': 'қ', 'r': 'р', 's': 'с',
+                't': 'т', 'u': 'у', 'v': 'в', 'x': 'х', 'y': 'й', 'z': 'з',
+                'ʼ': 'ъ', '\'': 'ъ'
+            };
+
+            const upperMap = {};
+            for (const key in map) {
+                upperMap[key.charAt(0).toUpperCase() + key.slice(1)] =
+                    map[key].charAt(0).toUpperCase() + map[key].slice(1);
+            }
+
+            const fullMap = {...map, ...upperMap};
+            const keys = Object.keys(fullMap).sort((a, b) => b.length - a.length);
+
+            let result = text;
+            keys.forEach(key => {
+                result = result.replace(new RegExp(key, 'g'), fullMap[key]);
+            });
+
+            return result;
+        }
+
+        latinInput.addEventListener('input', () => {
+            cyrilOutput.value = latinToCyril(latinInput.value);
+        });
+
+        function copyToClipboard() {
+            if (cyrilOutput.value.trim() === '') {
+                alert('Kiril matn mavjud emas!');
+                return;
+            }
+            navigator.clipboard.writeText(cyrilOutput.value)
+                .then(() => {
+                    // alert('✅ Nusxalandi!');
+                })
+                .catch(err => {
+                    console.error('Xatolik:', err);
+                });
+        }
+    </script>
+</body>
+</html>
